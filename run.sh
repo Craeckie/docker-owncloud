@@ -134,6 +134,8 @@ touch /var/run/supervisord.pid
 chown www-data:www-data /var/run/supervisord.pid
 touch /var/log/supervisord.log
 chown www-data:www-data /var/log/supervisord.log
+chown www-data:www-data /etc/supervisord.conf
+chown -R www-data:www-data /etc/supervisord.d/
 
 # PHP-FPM setup
 # touch /var/log/php5-fpm.log
