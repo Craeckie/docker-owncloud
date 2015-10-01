@@ -5,7 +5,7 @@ MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 # Dependencies
 # TODO: Add NFS support
 RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update && \
+    apt-get update && apt-get dist-upgrade \
     apt-get install -y --no-install-recommends cron bzip2 php5-cli php5-gd \
     php5-pgsql php5-sqlite php5-mysqlnd \
     php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu \
