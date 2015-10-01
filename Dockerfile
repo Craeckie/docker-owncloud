@@ -32,7 +32,8 @@ COPY run.sh /usr/bin/run.sh
 COPY occ.sh /usr/bin/occ
 
 # Install ownCloud
-RUN tar -C /var/www/ -xvf /tmp/owncloud.tar.gz && \
+RUN mkdir -p /var/www/ && \
+    tar -C /var/www/ -xvf /tmp/owncloud.tar.gz && \
     tar -C /var/www/ -xvf /tmp/3rdparty.tar.gz && \
     mv /var/www/core-${OWNCLOUD_VERSION} /var/www/owncloud && \
     rmdir /var/www/owncloud/3rdparty && \
