@@ -27,7 +27,7 @@ COPY nginx_ssl.conf /etc/nginx/nginx_ssl.conf
 COPY php.ini /etc/php5/fpm/php.ini
 COPY php-cli.ini /etc/php5/cli/php.ini
 COPY cron.conf /etc/owncloud-cron.conf
-COPY supervisor-owncloud.conf /etc/supervisor/conf.d/supervisor-owncloud.conf
+COPY supervisor-owncloud.conf /etc/supervisor.d/supervisor-owncloud.conf
 COPY run.sh /usr/bin/run.sh
 COPY occ.sh /usr/bin/occ
 
