@@ -83,7 +83,7 @@ owncloud_autoconfig() {
     update_config_line "$config" adminlogin "$ADMIN_USER"
     update_config_line "$config" adminpass "$ADMIN_PASS"
     update_config_line "$config" directory "$DATA_DIR"
-    update_config_line "$config" "memcache.local" '\OC\Memcache\APCu' # Caching through APCu
+    update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     
     # Add closing tag
     if ! grep ');' "$config"
@@ -103,7 +103,7 @@ update_owncloud_config() {
     update_config_line "$config" dbpassword "$DB_PASS"
     update_config_line "$config" dbtableprefix "$DB_TABLE_PREFIX"
     update_config_line "$config" directory "$DATA_DIR"
-    update_config_line "$config" "memcache.local" '\OC\Memcache\APCu' # Caching through APCu
+    update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     echo "Done !"
 }
 
