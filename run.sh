@@ -52,6 +52,8 @@ update_config_line() {
     if [[ -z "$value" ]]; then
         return
     fi
+    
+    echo "$2: $3"
 
     # Check if the option is set.
     if grep "$option" "$config" >/dev/null 2>&1
