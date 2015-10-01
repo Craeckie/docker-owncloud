@@ -6,9 +6,11 @@ MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 # TODO: Add NFS support
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update && \
-    apt-get install -y cron bzip2 php5-cli php5-gd php5-pgsql php5-sqlite \
-    php5-mysqlnd php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu \
-    php5-imagick php5-fpm smbclient nginx supervisor && \
+    apt-get install -y --no-install-recommends cron bzip2 php5-cli php5-gd 
+    php5-pgsql php5-sqlite php5-mysqlnd \
+    php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu \
+    php5-imagick php5-fpm smbclient nginx supervisor \
+    libreoffice-writer && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
@@ -33,8 +35,8 @@ COPY run.sh /usr/bin/run.sh
 COPY occ.sh /usr/bin/occ
 
 # Install ownCloud
-RUN tar -C /var/www/ -xvf /tmp/owncloud.tar.gz && \
-    tar -C /var/www/ -xvf /tmp/3rdparty.tar.gz && \
+RUN tar -C /var/www/ -xf /tmp/owncloud.tar.gz && \
+    tar -C /var/www/ -xf /tmp/3rdparty.tar.gz && \
     mv /var/www/core-${OWNCLOUD_VERSION} /var/www/owncloud && \
     rmdir /var/www/owncloud/3rdparty && \
     mv /var/www/3rdparty-${OWNCLOUD_VERSION} /var/www/owncloud/3rdparty && \
