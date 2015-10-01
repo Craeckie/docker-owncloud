@@ -132,10 +132,8 @@ chown -R www-data:www-data /var/www/owncloud
 # Supervisor setup
 touch /var/run/supervisord.pid
 chown www-data:www-data /var/run/supervisord.pid
-touch /var/log/supervisor/supervisord.log
-chown www-data:www-data /var/log/supervisor/supervisord.log
-mkdir -p /var/log/supervisor
-chown www-data:www-data /var/log/supervisor
+touch /var/log/supervisord.log
+chown www-data:www-data /var/log/supervisord.log
 
 # PHP-FPM setup
 # touch /var/log/php5-fpm.log
