@@ -130,12 +130,12 @@ chown -R www-data:www-data /var/www/owncloud
 
 # FIXME: This setup is intended for running supervisord as www-data
 # Supervisor setup
-# touch /var/run/supervisord.pid
-# chown www-data:www-data /var/run/supervisord.pid
-# touch /var/log/supervisor/supervisord.log
-# chown www-data:www-data /var/log/supervisor/supervisord.log
-# mkdir -p /var/log/supervisor
-# chown www-data:www-data /var/log/supervisor
+touch /var/run/supervisord.pid
+chown www-data:www-data /var/run/supervisord.pid
+touch /var/log/supervisor/supervisord.log
+chown www-data:www-data /var/log/supervisor/supervisord.log
+mkdir -p /var/log/supervisor
+chown www-data:www-data /var/log/supervisor
 
 # PHP-FPM setup
 # touch /var/log/php5-fpm.log
@@ -155,4 +155,4 @@ then
     update_timezone "$TIMEZONE"
 fi
 
-exec supervisord -n -c /etc/supervisord.conf
+exec supervisord -n -u www-data -c /etc/supervisord.conf
