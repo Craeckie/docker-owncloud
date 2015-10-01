@@ -33,6 +33,7 @@ COPY occ.sh /usr/bin/occ
 
 # Install ownCloud
 RUN mkdir -p /var/www/ && \
+    useradd www-data && \
     tar -C /var/www/ -xvf /tmp/owncloud.tar.gz && \
     tar -C /var/www/ -xvf /tmp/3rdparty.tar.gz && \
     mv /var/www/core-${OWNCLOUD_VERSION} /var/www/owncloud && \
