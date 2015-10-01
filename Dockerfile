@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     php5-imagick php5-fpm smbclient nginx supervisor && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
 
 ENV OWNCLOUD_VERSION 8.1.3
 ENV TIMEZONE UTC
