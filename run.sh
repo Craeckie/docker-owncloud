@@ -108,7 +108,7 @@ update_owncloud_config() {
 }
 
 # Update the config if the config file exists, otherwise autoconfigure owncloud
-if [[ -f /var/www/owncloud/config/config.php ]]
+if [ -f /var/www/owncloud/config/config.php ]
 then
     update_owncloud_config
 else
