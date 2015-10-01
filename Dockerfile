@@ -1,16 +1,16 @@
-FROM debian:8.0
+FROM base/archlinux
 
 MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 
 # Dependencies
 # TODO: Add NFS support
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update && \
-    apt-get install -y cron bzip2 php5-cli php5-gd php5-pgsql php5-sqlite \
-    php5-mysqlnd php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu \
-    php5-imagick php5-fpm smbclient nginx supervisor && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# removed: php-cli php-mysqlnd php-curl php-gmp (php-imagick)
+RUN pacman-key --refresh-keys && pacman -Syyu --noconfirm && pacman-db-upgrade
+RUN pacman -S --noconfirm --needed cron bzip2 gmp curl php-gd php-pgsql php-sqlite \
+    php-pear php-intl php-mcrypt php-ldap  php-apcu base-devel imagemagick \
+    php-fpm smbclient nginx supervisor && \
+    pacman -Scc <<< 'Y' <<< 'Y'
+RUN pecl install imagick && echo 'extension=imagick.so' >> /etc/php/php.ini
 
 ENV OWNCLOUD_VERSION 8.1.3
 ENV TIMEZONE UTC
