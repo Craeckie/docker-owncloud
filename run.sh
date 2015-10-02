@@ -199,6 +199,6 @@ then
 fi
 
 # clean up
-rm /tmp/owncloud.tar.gz 2>/dev/null
+rm -f /tmp/owncloud.tar.gz
 
 exec supervisord -n -c /etc/supervisor/supervisord.conf
