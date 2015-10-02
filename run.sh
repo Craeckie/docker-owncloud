@@ -169,16 +169,16 @@ chown www-data:www-data "$OC_LOG"
 # Fix permissions
 echo -n "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
+
+# Supervisor setup
+touch /var/run/supervisord.pid
+chown www-data:www-data /var/run/supervisord.pid
+mkdir -p /var/log/supervisor
+touch /var/log/supervisor/supervisord.log
+chown www-data:www-data /var/log/supervisor
 [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
-# FIXME: This setup is intended for running supervisord as www-data
-# Supervisor setup
-# touch /var/run/supervisord.pid
-# chown www-data:www-data /var/run/supervisord.pid
-# touch /var/log/supervisor/supervisord.log
-# chown www-data:www-data /var/log/supervisor/supervisord.log
-# mkdir -p /var/log/supervisor
-# chown www-data:www-data /var/log/supervisor
+
 
 # PHP-FPM setup
 # touch /var/log/php5-fpm.log
