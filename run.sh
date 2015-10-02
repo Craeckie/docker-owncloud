@@ -171,13 +171,7 @@ echo "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
 
 # Supervisor, cron setup
-touch /var/run/supervisord.pid /var/run/crond.pid
-chown www-data:www-data /var/run/supervisord.pid /var/run/crond.pid
-mkdir -p /var/log/supervisor
-touch /var/log/supervisor/supervisord.log
-chown -R www-data:www-data /var/log/supervisor /etc/cron.d/
-ls -la /var/log/supervisor
-[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
+#[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 
 
