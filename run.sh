@@ -167,7 +167,7 @@ touch "$OC_LOG"
 chown www-data:www-data "$OC_LOG"
 
 # Fix permissions
-echo -n "Fixing permissions... "
+echo "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
 
 # Supervisor setup
@@ -176,6 +176,7 @@ chown www-data:www-data /var/run/supervisord.pid
 mkdir -p /var/log/supervisor
 touch /var/log/supervisor/supervisord.log
 chown www-data:www-data /var/log/supervisor
+ls -la /var/log/supervisor
 [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 
