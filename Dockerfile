@@ -1,6 +1,6 @@
 FROM debian:8.0
 
-MAINTAINER Philipp Schmitt <philipp@schmitt.co>
+MAINTAINER Josia Roßkopf <josia-login@rosskopfs.de>
 
 # Dependencies
 # TODO: Add NFS support
