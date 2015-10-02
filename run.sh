@@ -20,6 +20,7 @@ DB_TABLE_PREFIX=${DB_TABLE_PREFIX:-oc_}
 ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-changeme}
 DATA_DIR=${DATA_DIR:-/var/www/owncloud/data}
+APPS_DIR=${APPS_DIR:-/var/www/owncloud/apps}
 OC_LOG=${OC_LOG:-/var/log/owncloud.log}
 
 HTTPS_ENABLED=${HTTPS_ENABLED:-false}
@@ -154,12 +155,19 @@ echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
 # Create data directory
 mkdir -p "$DATA_DIR"
 
+# Fix apps-volume
+if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
+    echo -n "Fixing apps-volume... "
+    tar -xzf /tmp/owncloud.tar.gz apps/ -C "$APPS_DIR"
+    echo "Done !"
+fi
+
 # Create logfile
 touch "$OC_LOG"
 chown www-data:www-data "$OC_LOG"
 
 # Fix permissions
-echo "Fixing permissions... "
+echo -n "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
 [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 

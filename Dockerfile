@@ -41,7 +41,7 @@ RUN pv /tmp/owncloud.tar.gz | tar -xz -C /var/www/ && \
     rmdir /var/www/owncloud/3rdparty && \
     mv /var/www/3rdparty-${OWNCLOUD_VERSION} /var/www/owncloud/3rdparty && \
     chmod +x /usr/bin/run.sh && \
-    rm /tmp/owncloud.tar.gz /tmp/3rdparty.tar.gz && \
+    rm /tmp/3rdparty.tar.gz && \
     su -s /bin/sh www-data -c "crontab /etc/owncloud-cron.conf"
 
 EXPOSE 80 443
