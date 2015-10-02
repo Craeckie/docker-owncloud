@@ -72,7 +72,7 @@ update_config_line() {
 }
 
 owncloud_autoconfig() {
-    echo -n "Creating autoconfig.php... "
+    echo "Creating autoconfig.php... "
     local -r config=/var/www/owncloud/config/autoconfig.php
     # Remove existing autoconfig
     rm -f "$config"
@@ -92,11 +92,11 @@ owncloud_autoconfig() {
     then
         echo ');' >> "$config"
     fi
-    echo "Done !"
+    [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
 update_owncloud_config() {
-    echo -n "Updating config.php... "
+    echo "Updating config.php... "
     local -r config=/var/www/owncloud/config/config.php
     update_config_line "$config" dbtype "$DB_TYPE"
     update_config_line "$config" dbhost "$DB_HOST"
@@ -106,7 +106,7 @@ update_owncloud_config() {
     update_config_line "$config" dbtableprefix "$DB_TABLE_PREFIX"
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
-    echo "Done !"
+    [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
 # Update the config if the config file exists, otherwise autoconfigure owncloud
@@ -129,30 +129,32 @@ update_nginx_config() {
         echo -n "SSL is disabled! "
         ln -s /etc/nginx/nginx_nossl.conf /etc/nginx/nginx.conf
     }
-    echo "Done !"
+    [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 update_nginx_config
 
 # Fix php-fpm environment
 fpm_conf_www="/etc/php5/fpm/pool.d/www.conf"
-echo -n "Fixing ENV in $fpm_conf_www... "
+echo "Fixing ENV in $fpm_conf_www... "
 echo 'env[HOSTNAME] = $VIRTUAL_HOST' | tee -a "$fpm_conf_www"
 echo 'env[PATH] = /usr/local/bin:/usr/bin:/bin' | tee -a "$fpm_conf_www"
 echo 'env[TMP] = /tmp' | tee -a "$fpm_conf_www"
 echo 'env[TMPDIR] = /tmp' | tee -a "$fpm_conf_www"
 echo 'env[TEMP] = /tmp' | tee -a "$fpm_conf_www"
-echo 'Done !'
+[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 # Enable apcu
-echo -n "Enable apc... "
+echo "Enable apc... "
 echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
-echo "Done !"
+[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 # Create data directory
 mkdir -p "$DATA_DIR"
 
 # Fix permissions
+echo "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
+[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 # FIXME: This setup is intended for running supervisord as www-data
 # Supervisor setup
