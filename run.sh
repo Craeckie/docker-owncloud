@@ -158,7 +158,7 @@ mkdir -p "$DATA_DIR"
 # Fix apps-volume
 if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
     echo -n "Fixing apps-volume... "
-    tar -xzf /tmp/owncloud.tar.gz apps/ -C "$APPS_DIR"
+    tar -xzf /tmp/owncloud.tar.gz core-${OWNCLOUD_VERSION}/apps -C "$APPS_DIR"
     echo "Done !"
 fi
 
