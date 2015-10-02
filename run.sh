@@ -20,6 +20,7 @@ DB_TABLE_PREFIX=${DB_TABLE_PREFIX:-oc_}
 ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-changeme}
 DATA_DIR=${DATA_DIR:-/var/www/owncloud/data}
+OC_LOG=${OC_LOG:-/var/log/owncloud.log}
 
 HTTPS_ENABLED=${HTTPS_ENABLED:-false}
 
@@ -86,6 +87,7 @@ owncloud_autoconfig() {
     update_config_line "$config" adminpass "$ADMIN_PASS"
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
+    update_config_line "$config" logfile "$OC_LOG"
     
     # Add closing tag
     if ! grep ');' "$config"
@@ -106,6 +108,7 @@ update_owncloud_config() {
     update_config_line "$config" dbtableprefix "$DB_TABLE_PREFIX"
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
+    update_config_line "$config" logfile "$OC_LOG"
     [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
@@ -150,6 +153,10 @@ echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
 
 # Create data directory
 mkdir -p "$DATA_DIR"
+
+# Create logfile
+touch "$OC_LOG"
+chown www-data:www-data "$OC_LOG"
 
 # Fix permissions
 echo "Fixing permissions... "

@@ -6,7 +6,7 @@ MAINTAINER Josia Roßkopf <josia-login@rosskopfs.de>
 # TODO: Add NFS support
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update && apt-get dist-upgrade -y && \
-    apt-get install -y --no-install-recommends cron bzip2 php5-cli php5-gd \
+    apt-get install -y --no-install-recommends cron bzip2 pv php5-cli php5-gd \
     php5-pgsql php5-sqlite php5-mysqlnd \
     php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu \
     php5-imagick php5-fpm smbclient nginx supervisor \
@@ -32,11 +32,11 @@ COPY php-cli.ini /etc/php5/cli/php.ini
 COPY cron.conf /etc/owncloud-cron.conf
 COPY supervisor-owncloud.conf /etc/supervisor/conf.d/supervisor-owncloud.conf
 COPY run.sh /usr/bin/run.sh
-COPY occ.sh /usr/bin/occ
+COPY occ.sh /usr/bin/occ 
 
 # Install ownCloud
-RUN tar -C /var/www/ -xf /tmp/owncloud.tar.gz && \
-    tar -C /var/www/ -xf /tmp/3rdparty.tar.gz && \
+RUN pv /tmp/owncloud.tar.gz | tar -xz -C /var/www/ && \
+    pv /tmp/3rdparty.tar.gz | tar -xz -C /var/www/ && \
     mv /var/www/core-${OWNCLOUD_VERSION} /var/www/owncloud && \
     rmdir /var/www/owncloud/3rdparty && \
     mv /var/www/3rdparty-${OWNCLOUD_VERSION} /var/www/owncloud/3rdparty && \
