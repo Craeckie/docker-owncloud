@@ -170,9 +170,9 @@ chown www-data:www-data "$OC_LOG"
 echo "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
 
-# Supervisor setup
-touch /var/run/supervisord.pid
-chown www-data:www-data /var/run/supervisord.pid
+# Supervisor, cron setup
+touch /var/run/supervisord.pid /var/run/crond.pid
+chown www-data:www-data /var/run/supervisord.pid /var/run/crond.pid
 mkdir -p /var/log/supervisor
 touch /var/log/supervisor/supervisord.log
 chown -R www-data:www-data /var/log/supervisor
