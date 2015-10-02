@@ -135,14 +135,18 @@ update_nginx_config
 
 # Fix php-fpm environment
 fpm_conf_www="/etc/php5/fpm/pool.d/www.conf"
-echo 'env[HOSTNAME] = $VIRTUAL_HOST' >> "$fpm_conf_www"
-echo 'env[PATH] = /usr/local/bin:/usr/bin:/bin' >> "$fpm_conf_www"
-echo 'env[TMP] = /tmp' >> "$fpm_conf_www"
-echo 'env[TMPDIR] = /tmp' >> "$fpm_conf_www"
-echo 'env[TEMP] = /tmp' >> "$fpm_conf_www"
+echo -n "Fixing ENV in $fpm_conf_www... "
+echo 'env[HOSTNAME] = $VIRTUAL_HOST' | tee -a "$fpm_conf_www"
+echo 'env[PATH] = /usr/local/bin:/usr/bin:/bin' | tee -a "$fpm_conf_www"
+echo 'env[TMP] = /tmp' | tee -a "$fpm_conf_www"
+echo 'env[TMPDIR] = /tmp' | tee -a "$fpm_conf_www"
+echo 'env[TEMP] = /tmp' | tee -a "$fpm_conf_www"
+echo 'Done !'
 
 # Enable apcu
-echo 'apc.enable_cli=1' >> /etc/php5/cli/conf.d/20-apcu.ini
+echo -n "Enable apc... "
+echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
+echo "Done !"
 
 # Create data directory
 mkdir -p "$DATA_DIR"
