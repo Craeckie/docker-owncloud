@@ -157,8 +157,8 @@ mkdir -p "$DATA_DIR"
 
 # Fix apps-volume
 if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
-    echo -n "Fixing apps-volume... "
-    tar -xzf /tmp/owncloud.tar.gz core-${OWNCLOUD_VERSION}/apps -C "$APPS_DIR"
+    echo -n "Fixing apps-volume in $APPS_DIR... "
+    tar -xzf /tmp/owncloud.tar.gz -C "$APPS_DIR" --strip-components=2 core-${OWNCLOUD_VERSION}/apps
     echo "Done !"
 fi
 
@@ -197,5 +197,8 @@ if [[ -n "$TIMEZONE" ]]
 then
     update_timezone "$TIMEZONE"
 fi
+
+# clean up
+rm /tmp/owncloud.tar.gz
 
 exec supervisord -n -c /etc/supervisor/supervisord.conf
