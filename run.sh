@@ -25,15 +25,15 @@ then
 fi
 
 # Initialize volumes
-bash /usr/bin/init-volumes.sh
+source /usr/bin/init-volumes.sh
 
 # Set up PHP-FPM
-bash /usr/bin/init-php.sh
+source /usr/bin/init-php.sh
 
 # echo "The $DB_TYPE database is listening on ${DB_HOST}:${DB_PORT}"
 
 # Configure Owncloud
-bash /usr/bin/init-oc.sh
+source /usr/bin/init-oc.sh
 
 
 update_nginx_config() {
