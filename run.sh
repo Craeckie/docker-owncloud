@@ -73,7 +73,7 @@ update_config_line() {
         return
     fi
     
-    echo "$2: $3"
+    #echo "$2: $3"
 
     # Check if the option is set.
     if grep "$option" "$config" >/dev/null 2>&1
@@ -120,6 +120,7 @@ owncloud_autoconfig() {
 update_owncloud_config() {
     echo "Updating config.php... "
     local -r config=/var/www/owncloud/config/config.php
+    cp "$config" "$config.old"
     update_config_line "$config" dbtype "$DB_TYPE"
     update_config_line "$config" dbhost "$DB_HOST"
     update_config_line "$config" dbname "$DB_NAME"
@@ -130,6 +131,8 @@ update_owncloud_config() {
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     update_config_line "$config" logfile "$OC_LOG"
     update_config_line "$config" logtimezone "$TIMEZONE"
+    diff "$config" "$config.old"
+    rm "$config.old"
     [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
