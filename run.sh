@@ -21,7 +21,7 @@ ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-changeme}
 DATA_DIR=${DATA_DIR:-/var/www/owncloud/data}
 APPS_DIR=${APPS_DIR:-/var/www/owncloud/apps}
-CONFIG_DIR=${APPS_DIR:-/var/www/owncloud/config}
+CONFIG_DIR=${CONFIG_DIR:-/var/www/owncloud/config}
 OC_LOG=${OC_LOG:-/var/log/owncloud.log}
 
 HTTPS_ENABLED=${HTTPS_ENABLED:-false}
