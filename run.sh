@@ -46,6 +46,23 @@ then
     DB_HOST=$DB_PORT_3306_TCP_ADDR
 fi
 
+
+# Fix volumes
+
+# Fix apps-volume
+if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
+    echo -n "Fixing apps-volume in $APPS_DIR... "
+    tar -xzf /tmp/owncloud.tar.gz -C "$APPS_DIR" --strip-components=2 core-${OWNCLOUD_VERSION}/apps
+    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
+fi
+
+# Fix config-volume
+if find "$CONFIG_DIR" -maxdepth 0 -empty | read v; then
+    echo -n "Fixing missing ca-bundle.crt in $CONFIG_DIR... "
+    tar -xzf /tmp/owncloud.tar.gz -C $CONFIG_DIR --strip-components=2 core-${OWNCLOUD_VERSION}/config
+    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
+fi
+
 # echo "The $DB_TYPE database is listening on ${DB_HOST}:${DB_PORT}"
 
 update_config_line() {
@@ -157,22 +174,6 @@ update_nginx_config
 
 # Create data directory
 mkdir -p "$DATA_DIR"
-
-# Fix volumes
-
-# Fix apps-volume
-if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
-    echo -n "Fixing apps-volume in $APPS_DIR... "
-    tar -xzf /tmp/owncloud.tar.gz -C "$APPS_DIR" --strip-components=2 core-${OWNCLOUD_VERSION}/apps
-    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
-fi
-
-# Fix config-volume
-if find "$CONFIG_DIR" -maxdepth 0 -empty | read v; then
-    echo -n "Fixing missing ca-bundle.crt in $CONFIG_DIR... "
-    tar -xzf /tmp/owncloud.tar.gz -C $CONFIG_DIR --strip-components=2 core-${OWNCLOUD_VERSION}/config
-    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
-fi
 
 # Create logfile
 touch "$OC_LOG"
