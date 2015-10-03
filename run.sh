@@ -132,7 +132,7 @@ update_owncloud_config() {
     update_config_line "$config" logfile "$OC_LOG"
     #update_config_line "$config" logtimezone "$TIMEZONE"
     diff "$config" "$config.old"
-    rm "$config.old"
+    rm -f "$config.old"
     [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
