@@ -61,9 +61,6 @@ if find "$CONFIG_DIR" -maxdepth 0 -empty | read v; then
     echo -n "Fixing config-volume in $CONFIG_DIR... "
     tar -xzf /tmp/owncloud.tar.gz -C $CONFIG_DIR --strip-components=2 core-${OWNCLOUD_VERSION}/config
     [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
-else
-    echo "Config-volume in $CONFIG_DIR is filled: "
-    ls -l $CONFIG_DIR
 fi
 
 # echo "The $DB_TYPE database is listening on ${DB_HOST}:${DB_PORT}"
