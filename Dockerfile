@@ -33,6 +33,7 @@ COPY php-cli.ini /etc/php5/cli/php.ini
 COPY cron.conf /etc/owncloud-cron.conf
 COPY supervisor-owncloud.conf /etc/supervisor/conf.d/supervisor-owncloud.conf
 COPY run.sh /usr/bin/run.sh
+COPY init-* /usr/bin/
 COPY occ.sh /usr/bin/occ 
 
 # Install ownCloud
@@ -41,7 +42,7 @@ RUN pv /tmp/owncloud.tar.gz | tar -xz -C /var/www/ && \
     mv /var/www/core-${OWNCLOUD_VERSION} /var/www/owncloud && \
     rmdir /var/www/owncloud/3rdparty && \
     mv /var/www/3rdparty-${OWNCLOUD_VERSION} /var/www/owncloud/3rdparty && \
-    chmod +x /usr/bin/run.sh && \
+    chmod +x /usr/bin/run.sh /usr/bin/init-* && \
     rm /tmp/3rdparty.tar.gz && \
     su -s /bin/sh www-data -c "crontab /etc/owncloud-cron.conf"
 
