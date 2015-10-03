@@ -107,7 +107,7 @@ owncloud_autoconfig() {
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     update_config_line "$config" logfile "$OC_LOG"
-    update_config_line "$config" logtimezone "$TIMEZONE"
+    #update_config_line "$config" logtimezone "$TIMEZONE"
     
     # Add closing tag
     if ! grep ');' "$config"
@@ -130,7 +130,7 @@ update_owncloud_config() {
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     update_config_line "$config" logfile "$OC_LOG"
-    update_config_line "$config" logtimezone "$TIMEZONE"
+    #update_config_line "$config" logtimezone "$TIMEZONE"
     diff "$config" "$config.old"
     rm "$config.old"
     [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
