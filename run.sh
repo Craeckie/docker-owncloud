@@ -21,6 +21,7 @@ ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-changeme}
 DATA_DIR=${DATA_DIR:-/var/www/owncloud/data}
 APPS_DIR=${APPS_DIR:-/var/www/owncloud/apps}
+CONFIG_DIR=${APPS_DIR:-/var/www/owncloud/config}
 OC_LOG=${OC_LOG:-/var/log/owncloud.log}
 
 HTTPS_ENABLED=${HTTPS_ENABLED:-false}
@@ -89,6 +90,7 @@ owncloud_autoconfig() {
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     update_config_line "$config" logfile "$OC_LOG"
+    update_config_line "$config" logtimezone "$TIMEZONE"
     
     # Add closing tag
     if ! grep ');' "$config"
@@ -110,6 +112,7 @@ update_owncloud_config() {
     update_config_line "$config" datadirectory "$DATA_DIR"
     update_config_line "$config" "memcache.local" '\\OC\\Memcache\\APCu' # Caching through APCu
     update_config_line "$config" logfile "$OC_LOG"
+    update_config_line "$config" logtimezone "$TIMEZONE"
     [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 }
 
@@ -119,6 +122,21 @@ then
     update_owncloud_config
 else
     owncloud_autoconfig
+    
+    # Fix php-fpm environment (only first time)
+    fpm_conf_www="/etc/php5/fpm/pool.d/www.conf"
+    echo "Fixing ENV in $fpm_conf_www... "
+    echo 'env[HOSTNAME] = $VIRTUAL_HOST' | tee -a "$fpm_conf_www"
+    echo 'env[PATH] = /usr/local/bin:/usr/bin:/bin' | tee -a "$fpm_conf_www"
+    echo 'env[TMP] = /tmp' | tee -a "$fpm_conf_www"
+    echo 'env[TMPDIR] = /tmp' | tee -a "$fpm_conf_www"
+    echo 'env[TEMP] = /tmp' | tee -a "$fpm_conf_www"
+    [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
+    
+    # Enable apcu
+    echo "Enable apc... "
+    echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
+    [[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 fi
 
 update_nginx_config() {
@@ -137,21 +155,6 @@ update_nginx_config() {
 }
 update_nginx_config
 
-# Fix php-fpm environment
-fpm_conf_www="/etc/php5/fpm/pool.d/www.conf"
-echo "Fixing ENV in $fpm_conf_www... "
-echo 'env[HOSTNAME] = $VIRTUAL_HOST' | tee -a "$fpm_conf_www"
-echo 'env[PATH] = /usr/local/bin:/usr/bin:/bin' | tee -a "$fpm_conf_www"
-echo 'env[TMP] = /tmp' | tee -a "$fpm_conf_www"
-echo 'env[TMPDIR] = /tmp' | tee -a "$fpm_conf_www"
-echo 'env[TEMP] = /tmp' | tee -a "$fpm_conf_www"
-[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
-
-# Enable apcu
-echo "Enable apc... "
-echo 'apc.enable_cli=1' | tee -a /etc/php5/cli/conf.d/20-apcu.ini
-[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
-
 # Create data directory
 mkdir -p "$DATA_DIR"
 
@@ -159,16 +162,23 @@ mkdir -p "$DATA_DIR"
 if find "$APPS_DIR" -maxdepth 0 -empty | read v; then
     echo -n "Fixing apps-volume in $APPS_DIR... "
     tar -xzf /tmp/owncloud.tar.gz -C "$APPS_DIR" --strip-components=2 core-${OWNCLOUD_VERSION}/apps
-    echo "Done !"
+    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
+    
+    echo -n "Fixing missing ca-bundle.crt in $CONFIG_DIR... "
+    tar -xzf /tmp/owncloud.tar.gz -C $CONFIG_DIR --strip-components=2 core-${OWNCLOUD_VERSION}/config/ca-bundle.crt
+    [[ $? -eq 0 ]] && echo "Done !" || echo "FAILURE"
 fi
+
+if ! [ -f "" ]
 
 # Create logfile
 touch "$OC_LOG"
 chown www-data:www-data "$OC_LOG"
 
 # Fix permissions
-echo "Fixing permissions... "
+echo -n "Fixing permissions... "
 chown -R www-data:www-data /var/www/owncloud
+[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
 
 # Supervisor, cron setup
 #[[ $? -eq 0 ]] && echo -e "Done !\n" || echo -e "FAILURE\n"
