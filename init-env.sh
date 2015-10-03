@@ -25,3 +25,14 @@ OC_LOG=${OC_LOG:-/var/log/owncloud.log}
 
 HTTPS_ENABLED=${HTTPS_ENABLED:-false}
 
+# Database vars
+# TODO: Add support for Oracle DB (and SQLite?)
+if [[ "$DB_PORT_5432_TCP_ADDR" ]]
+then
+    DB_TYPE=pgsql
+    DB_HOST=$DB_PORT_5432_TCP_ADDR
+elif [[ "$DB_PORT_3306_TCP_ADDR" ]]
+then
+    DB_TYPE=mysql
+    DB_HOST=$DB_PORT_3306_TCP_ADDR
+fi

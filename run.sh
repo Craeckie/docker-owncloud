@@ -12,17 +12,6 @@ source /usr/bin/init-env.sh
 #     HTTPS_ENABLED=true
 # fi
 
-# Database vars
-# TODO: Add support for Oracle DB (and SQLite?)
-if [[ "$DB_PORT_5432_TCP_ADDR" ]]
-then
-    DB_TYPE=pgsql
-    DB_HOST=$DB_PORT_5432_TCP_ADDR
-elif [[ "$DB_PORT_3306_TCP_ADDR" ]]
-then
-    DB_TYPE=mysql
-    DB_HOST=$DB_PORT_3306_TCP_ADDR
-fi
 
 # Initialize volumes
 source /usr/bin/init-volumes.sh
