@@ -11,7 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     php5-pgsql php5-sqlite php5-mysqlnd \
     php5-curl php5-intl php5-mcrypt php5-ldap php5-gmp php5-apcu php5-gd php5-imagick \
     supervisor ca-certificates \
-    libreoffice-writer smbclient sendmail && \
+    libreoffice-writer smbclient sendmail sasl2-bin && \
     sendmailconfig && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
