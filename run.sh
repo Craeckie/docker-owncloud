@@ -12,6 +12,8 @@ source /usr/bin/init-env.sh
 #     HTTPS_ENABLED=true
 # fi
 
+# Configure postfix
+sendmailconfig
 
 # Initialize volumes
 source /usr/bin/init-volumes.sh
