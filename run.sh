@@ -12,7 +12,8 @@ source /usr/bin/init-env.sh
 #     HTTPS_ENABLED=true
 # fi
 
-# Configure postfix
+# Configure sendmail
+echo "include(\`/etc/mail/sasl/sasl.m4')dnl" >> /etc/mail/sendmail.mc
 sendmailconfig
 
 # Initialize volumes
